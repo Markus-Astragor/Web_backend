@@ -1,23 +1,24 @@
+//Підключення бібліотек
 const express = require('express');
-const mongoose = require('mongoose');
+const Mongo = require('./Setup/Mongoose');
+const bodyParser = require('body-parser');
+const Theatre = require('./Api_routes/Theatre.js');
+require('dotenv').config();
 
-const start =async ()=>{
-await mongoose.connect('mongodb+srv://Astragor:z1x2c3v4b5@sandbox.5pnjbg4.mongodb.net/test').then(()=>{
-  console.log("Database is connected");
-}).catch(err => {
-  console.log(err, 'Some error')
-})
-}
 
 const app = express();
+app.use(bodyParser.json());
 
 
-start();
-app.get('/', (req, res) => {
-  res.status(200).send('Hello, world');
-})
 
+const Setup_server = async () => {
+  await Mongo.start(process.env.MONGO_DB_URL)
 
-app.listen(8080, (req, res)=>{
-  console.log('Server started')
-})
+  app.use(Theatre.router);
+
+  app.listen(process.env.PORT, (req, res) => {
+    console.log(`Server started on ${process.env.PORT}`)
+  })
+}
+
+Setup_server()
