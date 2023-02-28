@@ -4,6 +4,7 @@ const Mongo = require('./Setup/Mongoose');
 const bodyParser = require('body-parser');
 const Theatre = require('./Api_routes/Theatre.js');
 const Sessions = require('./Api_routes/Sessions.api');
+const { default: mongoose } = require('mongoose');
 require('dotenv').config();
 
 
@@ -13,7 +14,7 @@ app.use(bodyParser.json());
 
 
 const Setup_server = async () => {
-  await Mongo.start(process.env.MONGO_DB_URL)
+  await Mongo.start(process.env.MONGO_DB_URL);
 
   app.use(Theatre.router);
   app.use(Sessions.router);
