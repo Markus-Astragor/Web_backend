@@ -2,7 +2,7 @@
 const express = require('express');
 const Mongo = require('./Setup/Mongoose');
 const bodyParser = require('body-parser');
-const Theatre = require('./Api_routes/Theatre.js');
+const Theatre = require('./Api_routes/Theatre.api.js');
 const Sessions = require('./Api_routes/Sessions.api');
 const { default: mongoose } = require('mongoose');
 require('dotenv').config();
