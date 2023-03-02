@@ -2,8 +2,8 @@ const { Schema, Types, model } = require('mongoose');
 
 const schema = new Schema(
   {
-    _id: { type: Types.ObjectId, required: true },
-    theatreId: { type: Number, required: true },
+    _id: { type: Types.ObjectId },
+    theaterId: { type: Number },
     location: {
       address: {
         street1: { type: String },
@@ -13,11 +13,14 @@ const schema = new Schema(
       },
       geo: {
         type: {type: String},
-        coordinates: {type: Array}
+        coordinates: {
+          0: {type: Number},
+          1: {type: Number}
+        }
       }
     }
   })
 
-  const Theaters = new model('theatres', schema)
+  const Theaters = new model('theaters', schema)
 
 module.exports = { Theaters };
