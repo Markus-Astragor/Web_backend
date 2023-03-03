@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const Theaters = require('./Api_routes/Theatre.api.js');
 const Sessions = require('./Api_routes/Sessions.api');
 const TheatersInfo = require('./Api_routes/TheatersInfo');
+const Users = require('./Api_routes/Users.api');
 require('dotenv').config();
 
 
@@ -19,6 +20,7 @@ const Setup_server = async () => {
   app.use(Theaters.router);
   app.use(Sessions.router);
   app.use(TheatersInfo.router);
+  app.use(Users.router);
 
   app.listen(process.env.PORT, (req, res) => {
     console.log(`Server started on ${process.env.PORT}`)
