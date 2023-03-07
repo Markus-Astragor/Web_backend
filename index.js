@@ -15,11 +15,9 @@ app.use(bodyParser.json());
 
 
 const Setup_server = async () => {
-  await Mongo.start(process.env.MONGO_DB_URL);
 
-  app.use(Theaters.router);
-  app.use(Sessions.router);
-  app.use(TheatersInfo.router);
+  await Mongo.start(process.env.MONGO_DB_URL);
+  
   app.use(Users.router);
 
   app.listen(process.env.PORT, (req, res) => {

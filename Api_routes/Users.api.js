@@ -3,13 +3,17 @@ const { Users } = require('../models/Users');
 const Router = require('express');
 const router = Router();
 
-router.get('/users', async (req, res)=> {
-    const {name, email} = req.query;
+router.post('/users', async (req, res)=> {
+    const {email, password} = req.body;
+    const user = new Users({
+      email, password, apiToken: 'blabla'
+    })
 
+    const doc = await user.save()
     const queryDb = {};
 
-    if(name){
-      queryDb.name = name
+    if(password){
+      queryDb.password = password;
     }
 
     if(email){
@@ -18,7 +22,7 @@ router.get('/users', async (req, res)=> {
 
     const docs = await Users.find(queryDb);
 
-    return res.status(200).send(docs);
+    return res.status(200).send(doc);
 })
 
 module.exports = { router };
