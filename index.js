@@ -6,6 +6,7 @@ const Mongo_Db_URL = process.env.MONGO_DB_URL;
 const Mongo = require('./Setup/Mongoose'); 
 const bodyParser = require('body-parser');
 const Users = require('./Api_Routes/Users_api');
+const Users_check = require('./Api_Routes/Users_check');
 
 
 
@@ -16,7 +17,8 @@ const setupServer = async () => {
         res.send('Hi, Ostap')
     })
     
-    app.use(Users.router)
+    app.use(Users.router);
+    app.use(Users_check.router);
     app.listen(Port, () => {
         console.log('Server was started on', Port);
     })
