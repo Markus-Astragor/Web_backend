@@ -8,9 +8,9 @@ const bodyParser = require('body-parser');
 const Users = require('./Api_Routes/Users_api');
 
 
-app.use(bodyParser.json());
-const setupServer = async () => {
 
+const setupServer = async () => {
+    app.use(bodyParser.json());
     await Mongo.start(Mongo_Db_URL);
     app.get('/', (req, res)=>{
         res.send('Hi, Ostap')
