@@ -5,7 +5,7 @@ const { generateApiKey } = require('generate-api-key');
 
 router.post('/links', async (req, res) => {
 
-  const user = Users.findOne({apiKey: apiKey});
+  const user = await  Users.findOne({apiKey: apiKey});
 
   if(!user){
     res.status(400).send('User is not authorized');
@@ -18,7 +18,9 @@ router.post('/links', async (req, res) => {
     max: 15
   });
 
-  const userId = Users._id;
+  const userId = user._id;
+
+    
 
 
 })
