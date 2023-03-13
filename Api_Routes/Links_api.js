@@ -10,8 +10,6 @@ function linkDate(){
   let expiredDate = date.setDate(currentDay + 5);
 
   return expiredDate;
-
-
 }
 
 
@@ -44,8 +42,12 @@ router.post('/links', async (req, res) => {
     expiredAt: linkDate(),
   })
     const doc = await docs.save();
+  
+    const linkResponse = {};
+    linkResponse.cut = doc.link.cut;
+    linkResponse.expiredAt = doc.expiredAt;
 
-    res.send(doc);
+    res.send(linkResponse);
 })
 
 module.exports = {router};
