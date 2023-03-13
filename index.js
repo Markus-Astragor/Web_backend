@@ -7,6 +7,7 @@ const Mongo = require('./Setup/Mongoose');
 const bodyParser = require('body-parser');
 const Users = require('./Api_Routes/Users_api');
 const Users_check = require('./Api_Routes/Users_check');
+const PostLinks = require('./Api_Routes/Links_api');
 
 
 
@@ -19,6 +20,7 @@ const setupServer = async () => {
     
     app.use(Users.router);
     app.use(Users_check.router);
+    app.use(PostLinks.router);
     app.listen(Port, () => {
         console.log('Server was started on', Port);
     })

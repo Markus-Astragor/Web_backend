@@ -6,6 +6,6 @@ const schema = new Schema({
   apiKey: { type: String, required: true }
 })
 
-const Users = new model('Users', schema);
+const Users = new model('users', schema);
 
 module.exports = { Users };

@@ -1,26 +1,51 @@
 const { Users } = require('../models/Users');
+const {Links} = require('../models/Links');
 const Router = require('express');
 const router = Router();
 const { generateApiKey } = require('generate-api-key');
 
-router.post('/links', async (req, res) => {
+function linkDate(){
+  let date = new Date;
+  let currentDay = date.getDate();
+  let expiredDate = date.setDate(currentDay + 5);
 
-  const user = await  Users.findOne({apiKey: apiKey});
+  return expiredDate;
+
+
+}
+
+
+router.post('/links', async (req, res) => {
+  const {original} = req.body;
+  const {apiKey} = req.headers;
+  const user = await Users.findOne({apiKey: apiKey});
 
   if(!user){
-    res.status(400).send('User is not authorized');
+    return res.status(400).send('User is not authorized');
   }
 
   const shortlink = generateApiKey({
     method: 'string',
-    pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~+/',
+    pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
     min: 5,
     max: 15
   });
 
+
+  
   const userId = user._id;
 
-    
+  const docs = new Links({
+    id: userId,
+    link: {
+      original: original,
+      short: shortlink
+    },
+    expiredAt: linkDate(),
+  })
+    const doc = await docs.save();
 
-
+    res.send(doc);
 })
+
+module.exports = {router};
