@@ -17,8 +17,8 @@ function linkDate(){
 
 router.post('/links', async (req, res) => {
   const {original} = req.body;
-  const {apiKey} = req.headers;
-  const user = await Users.findOne({apiKey: apiKey});
+  const {auth} = req.headers;
+  const user = await Users.findOne({apiKey: auth});
 
   if(!user){
     return res.status(400).send('User is not authorized');
@@ -39,7 +39,7 @@ router.post('/links', async (req, res) => {
     id: userId,
     link: {
       original: original,
-      short: shortlink
+      cut: shortlink
     },
     expiredAt: linkDate(),
   })
