@@ -19,7 +19,7 @@ router.post('/links', async (req, res) => {
   const user = await Users.findOne({apiKey: auth});
 
   if(!user){
-    return res.status(400).send('User is not authorized');
+    return res.status(401).send('User is not authorized');
   }
 
   const shortlink = generateApiKey({
