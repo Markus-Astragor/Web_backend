@@ -6,31 +6,27 @@ const router = Router();
 router.get('/links', async (req, res) => {
   const { auth } = req.headers;
   const user = await Users.findOne({ apiKey: auth });
-  const { original, cut } = req.query;
+  const { expiredAt } = req.query;
+
 
   if (!user) {
     return res.status(401).send('User is not authorized');
   }
 
-  const queryDb = {};
+  const userId = user._id;
 
   // linksResponse.original = queryDb["link.original"] = original;
   // linksResponse.cut = 
-
-  if (original) {
-    queryDb["link.original"] = original;
+  const queryDb = {};
+  if (expiredAt) {
+    queryDb.expiredAt = expiredAt;
   }
 
-  if (cut) {
-    queryDb["link.cut"] = cut;
-  }
-
-  const docs = await Links.find(queryDb);
-
-
-  console.log(docs);
+  const docs = await Links.find({ userId: userId });
+  let ParsedExpiredAt = JSON.parse(expiredAt);
+  console.log(ParsedExpiredAt);
   return res.status(200).send(docs);
-  
+
 
 
 })
