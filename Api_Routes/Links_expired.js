@@ -17,14 +17,16 @@ router.get('/links', async (req, res) => {
 
   // linksResponse.original = queryDb["link.original"] = original;
   // linksResponse.cut = 
-  const queryDb = {};
-  if (expiredAt) {
-    queryDb.expiredAt = expiredAt;
-  }
+  // const queryDb = {};
+  // if (expiredAt) {
+  //   queryDb.expiredAt = expiredAt;
+  // }
 
-  const docs = await Links.find({ userId: userId });
-  let ParsedExpiredAt = JSON.parse(expiredAt);
-  console.log(ParsedExpiredAt);
+  
+  // let parseExpire = JSON.parse(expiredAt);
+  // console.log(parseExpire);
+  // console.log(expiredAt);
+  const docs = await Links.find({ userId: userId});
   return res.status(200).send(docs);
 
 
