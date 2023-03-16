@@ -3,8 +3,13 @@ const Router = require('express');
 const router = Router();
 
 router.get('/shortLink/:cut', async (req, res) => {
-  const {cut} = req.params.cut;
-  const docs = await Links.findOne({cut: cut});
+  const {cut} = req.params;
+  //find cut link
+  const QueryDB ={};
+  QueryDB["link.cut"] = cut;
+
+
+  const docs = await Links.findOne(QueryDB);
 
   if(!docs){
     return res.status(400).send('Short link wasn`t found')
@@ -14,8 +19,7 @@ router.get('/shortLink/:cut', async (req, res) => {
     return res.status(400).send('Link was expired');
   }
 
-
-  return res.status(200).redirect(docs.link.original);
+  return res.redirect(docs.link.original);
 })
 
 module.exports = { router }
