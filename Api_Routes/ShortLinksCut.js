@@ -23,7 +23,7 @@ router.get('/shortLink/:cut', async (req, res) => {
     return res.status(400).send('Short link wasn`t found')
   }
 
-  if (current == docs.expiredAt) {
+  if (current >= docs.expiredAt) {
     return res.status(400).send('Link was expired');
   }
 
