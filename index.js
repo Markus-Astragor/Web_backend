@@ -35,8 +35,16 @@ function CheckExist(folderName) {
 
 CheckExist(folderName);
 
+
+
+result.forEach(characterName =>{
+  const quotes = text.match(new RegExp(`${characterName}.+`, 'g'));
+  console.log(quotes);
+})
+
+
 characters.forEach(filename => {
-  fs.writeFile(`${folderName}/${filename}`, 'content', err => {
+  fs.writeFile(`${folderName}/${filename}.txt`, '', err => {
     if (err) {
       console.log(err);
     }
