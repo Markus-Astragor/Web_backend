@@ -16,19 +16,28 @@ const characters = [];
 
 result.forEach(characterName => {
   characters.push(
-   characterName.slice(0, -1)
+    characterName.slice(0, -1)
   );
- 
+
 });
 
 console.log('characters:', characters);
 
+
 let folderName = 'Heroes';
-fs.mkdirSync(folderName);
+function CheckExist(folderName) {
+  
+  if (fs.existsSync(`./${folderName}`)) {
+    return
+  }
+  fs.mkdirSync(folderName);
+}
+
+CheckExist(folderName);
 
 characters.forEach(filename => {
   fs.writeFile(`${folderName}/${filename}`, 'content', err => {
-    if(err){
+    if (err) {
       console.log(err);
     }
   })
