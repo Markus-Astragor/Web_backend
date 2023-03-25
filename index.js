@@ -37,16 +37,32 @@ CheckExist(folderName);
 
 
 
-result.forEach(characterName =>{
-  const quotes = text.match(new RegExp(`${characterName}.+`, 'g'));
-  console.log(quotes);
-})
-
-
-characters.forEach(filename => {
-  fs.writeFile(`${folderName}/${filename}.txt`, '', err => {
+function MywritetoFile (i, MyData) {
+  fs.writeFile(`./${folderName}/${i}.txt`, MyData, err => {
     if (err) {
       console.log(err);
     }
-  })
-})
+  });
+}
+
+
+
+for (let i = 0; i < characters.length; i++) {
+  const quotes = text.match(new RegExp(`${characters[i]}:.+`, 'gm'));
+  
+    const new_quotes = [];
+    quotes.forEach( quote =>{
+
+      if(!new_quotes.includes(quote.slice(characters[i].length + 1))){
+        new_quotes.push(quote.slice(characters[i].length + 1));
+    }
+
+    })
+    new_quotes.forEach(new_quote => {
+      MywritetoFile(characters[i], `${new_quote}\n`);
+    })
+}
+
+
+
+
