@@ -3,8 +3,8 @@ const { Schema, model, Types} = require('mongoose');
 const schema = new Schema({
   userId: {type: Types.ObjectId},
   link: {
-    original: {type: String, required: true},
-    cut: {type: String, required: true}
+    original: {type: String},
+    cut: {type: String}
   },
   expiredAt: {type: Date, required: true},
 })
