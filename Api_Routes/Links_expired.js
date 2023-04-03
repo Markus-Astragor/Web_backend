@@ -21,9 +21,9 @@ router.get('/links', async (req, res) => {
     queryDb.expiredAt = expiredAt;
   }
 
-  
-  const docs = await Links.findOne({id: userId})
-  return res.status(200).send(docs.expiredAt);
+  let expiredAt_parsed = JSON.parse(expiredAt);  
+  const docs = await Links.find({userId: userId, expiredAt: expiredAt_parsed});
+  return res.status(200).send(docs);
 
 
 

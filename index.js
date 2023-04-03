@@ -10,6 +10,7 @@ const Users_check = require('./Api_Routes/Users_check');
 const PostLinks = require('./Api_Routes/Links_api');
 const GetLinks = require('./Api_Routes/Links_expired');
 const ShortLinksCut = require('./Api_Routes/ShortLinksCut');
+const cors = require('cors');
 
 
 const setupServer = async () => {
@@ -24,6 +25,7 @@ const setupServer = async () => {
     app.use(PostLinks.router);
     app.use(GetLinks.router);
     app.use(ShortLinksCut.router);
+    app.use(cors());
     
     app.listen(Port, () => {
         console.log('Server was started on', Port);

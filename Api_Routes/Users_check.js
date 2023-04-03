@@ -10,7 +10,13 @@ router.post('/users/login', async (req, res) => {
   if (!user) {
     return res.status(400).send('User with such credentials was not found');
   }
-  res.send(user)
+ 
+  // if(user.password != password){
+  //   return res.status(400).send('User with such credentials was not found');
+  // }
+  
+
+  res.send(user);
 })
 
 module.exports = { router };
