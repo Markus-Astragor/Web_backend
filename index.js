@@ -8,7 +8,7 @@ const TheatersInfo = require('./Api_routes/TheatersInfo');
 const Users = require('./Api_routes/Users.api');
 require('dotenv').config();
 
-
+//
 const app = express();
 app.use(bodyParser.json());
 
