@@ -21,14 +21,11 @@ router.post('/users', async (req, res)=> {
         
         // генерація унікального apiKey для нового користувача
         let apiKey = crypto.randomBytes(20).toString('hex');
-        for(let i = 0; i < 5;){
-          const result = await Users.countDocuments({apiKey: apiKey});
-          if(result !=0){
-             apiKey = crypto.randomBytes(20).toString('hex');
-          }
-          else{
-            break;
-          }
+        const result = await Users.findOne({apiKey: apiKey});
+
+        while(result){
+          apiKey = crypto.randomBytes(20).toString('hex');
+          result = await Users.findOne({apiKey: apiKey});
         }
         if(!password){
           console.log('Password should contain symbols');
