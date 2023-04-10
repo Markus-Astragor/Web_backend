@@ -14,3 +14,5 @@ const bootstrap = async () => {
     console.log(`port: ${PORT} baseUrl: ${base_url}`);
     console.log(`port: ${SOCKET_PORT} socket_base_url: ${socketBaseURl}`);
 }
+
+bootstrap();
