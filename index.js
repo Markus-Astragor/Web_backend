@@ -1,3 +1,4 @@
+const { log } = require('console');
 const fs = require('fs');
 
 
@@ -50,8 +51,10 @@ function MywritetoFile (i, MyData) {
 for (let i = 0; i < characters.length; i++) {
   const quotes = text.match(new RegExp(`${characters[i]}:.+`, 'gm'));
   
+console.log([...quotes]);
+console.log(quotes);
     const new_quotes =[...quotes].pop();
-    console.log(new_quotes)
+     console.log(new_quotes)
     // quotes.forEach( quote =>{
 
     //   if(!new_quotes.includes(quote.slice(characters[i].length + 1))){
