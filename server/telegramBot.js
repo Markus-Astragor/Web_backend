@@ -1,3 +1,5 @@
+const path = require('path');
+require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 const { Telegraf } = require('telegraf');
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const baseUrl = process.env.BASE_URL;
@@ -20,7 +22,7 @@ module.exports = async(app, emitter) => {
       fistName: ctx.from.first_name,
       lastName: ctx.from.last_name || ''
     };
-  
+  console.log(userInfo);
     if (!Object.values(userInfo).find(e => e.length)) {
       userInfo.firstName = ctx.from.username || ctx.from.id;
      }

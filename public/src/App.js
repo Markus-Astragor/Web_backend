@@ -1,15 +1,14 @@
-import './style.css';
-import EventSourceChat from './event-source';
-import LongPollingChat from './long-polling';
-import WebSocketChat from './web-socket';
+import logo from './logo.svg';
+import './App.css';
+import EventSourceChat from './EventSource';
 
-const App = () => {
 
+function App() {
   return (
-    // <LongPollingChat />
-    // <EventSourceChat />
-    <WebSocketChat />
+    <div className="App">
+      <EventSourceChat/>
+    </div>
   );
-};
+}
 
 export default App;

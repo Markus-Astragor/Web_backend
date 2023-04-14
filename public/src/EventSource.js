@@ -1,51 +1,36 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import './style.css';
-import { v4 as uuid } from 'uuid';
 
-const LongPollingChat = () => {
+const BASE_URL = process.env.BASE_URL;
+
+const EventSourceChat = () => {
  const [userName, setUserName] = useState('');
  const [messages, setMessages] = useState([]);
  const [value, setValue] = useState("");
  const [showLogin, setShowLogin] = useState(true);
 
- const id = uuid();
 
- const subscribeOnAuth = async () => {
-  try {
-   const { data } = await axios.get(`/login?id=${id}`);
-   const name = `${data.firstName} ${data.lastName}`;
-   setUserName(name);
-   localStorage.setItem('userName', name);
-   setShowLogin(false);
-  } catch (err) {
-   console.error(err);
-   subscribeOnAuth();
+ const selectUserName = () => {
+  if (!userName) {
+   return;
   }
+  localStorage.setItem('userName', userName);
+  setShowLogin(false);
  };
-
  const subscribe = async () => {
-  try {
-   const { data } = await axios.get('/messages');
-   setMessages((prev) => {
-    return [...prev, data.message];
-   });
-   subscribe();
-  } catch (err) {
-   console.error(err);
-   setTimeout(() => subscribe(), 500);
-  }
+  const eventSource = new EventSource(`${BASE_URL}/connect`);
+  eventSource.onmessage = function (event) {
+   console.log(`data:${event.data}`);
+   const message = JSON.parse(event.data);
+   setMessages((prev) => [...prev, message]);
+  };
  };
  useEffect(() => {
   const userName = localStorage.getItem('userName');
-  if (userName) {
-   setUserName(userName);
-   setShowLogin(false);
-   subscribe();
-  } else {
-   subscribeOnAuth()
-    .then(() => subscribe());
-  }
+  setUserName(userName);
+  setShowLogin(userName ? false : true);
+  subscribe();
  }, []);
 
  const sendMessage = async () => {
@@ -59,9 +44,12 @@ const LongPollingChat = () => {
  return (
   <>
    <div className="login" style={{ display: showLogin ? 'flex' : 'none' }}>
-    <input type="text" value={id} readOnly />
-   </div>
-   <div className="container">
+    <input
+     type="text"
+     value={userName}
+     onChange={e => setUserName(e.target.value)} />
+    <button onClick={selectUserName}>Set name</button>
+   </div><div className="container">
     <div className="form">
      <input
       type="text"
@@ -83,4 +71,4 @@ const LongPollingChat = () => {
  );
 };
 
-export default LongPollingChat;
+export default EventSourceChat;
