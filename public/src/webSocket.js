@@ -7,6 +7,7 @@ import like from './images/like.png';
 import selectedLike from './images/like_selected.png';
 
 let SOCKET_BASE_URL = process.env.SOCKET_BASE_URL;
+console.log(SOCKET_BASE_URL);
 
 const WebSocketChat = () => {
   const userNameStorage = localStorage.getItem('userName');
