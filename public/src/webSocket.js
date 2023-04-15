@@ -6,7 +6,9 @@ import { v4 as uuid } from 'uuid';
 import like from './images/like.png';
 import selectedLike from './images/like_selected.png';
 
-let SOCKET_BASE_URL = process.env.SOCKET_BASE_URL;
+// let SOCKET_BASE_URL = process.env.SOCKET_BASE_URL;
+let SOCKET_BASE_URL = 'ws://localhost:5000';
+
 console.log(SOCKET_BASE_URL);
 
 const WebSocketChat = () => {
