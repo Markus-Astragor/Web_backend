@@ -22,9 +22,9 @@ module.exports = () => {
     ws.on('message', (messageString) => {
       const message = JSON.parse(messageString);
       console.log('message', message);
-      if (message.event === 'first-connect') {
+      if (message.event == 'first-connect') {
         const { userName } = message;
-
+        console.log('websocket first login', userName);
         let connectionCount = 0;
 
         wss.clients.forEach(client => {
@@ -43,6 +43,8 @@ module.exports = () => {
       }
       sendToAll(message);
     })
+
+    
     ws.on('close', (reason) => {
       console.log(`Connection was closed ${reason}`);
       let isOnline = false;

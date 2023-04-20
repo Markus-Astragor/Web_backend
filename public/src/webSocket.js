@@ -6,8 +6,8 @@ import { v4 as uuid } from 'uuid';
 import like from './images/like.png';
 import selectedLike from './images/like_selected.png';
 
-let SOCKET_BASE_URL = process.env.REACT_APP_SOCKET_BASE_URL;
-// let SOCKET_BASE_URL = 'ws://localhost:5000';
+// let SOCKET_BASE_URL = process.env.REACT_APP_SOCKET_BASE_URL;
+let SOCKET_BASE_URL = 'ws://localhost:5000';
 
 console.log(SOCKET_BASE_URL);
 
@@ -24,6 +24,7 @@ const WebSocketChat = () => {
     try {
       const { data } = await axios.get(`/login?id=${id}`);
       const name = `${data.firstName} ${data.lastName}`;
+      console.log('name',name);
       setUserName(name);
       localStorage.setItem('userName', name);
       setShowLogin(false);
@@ -36,14 +37,17 @@ const WebSocketChat = () => {
   const socket = useRef();
   const [connected, setConnected] = useState(false);
   const subscribe = async () => {
+    console.log(showLogin);
     socket.current = new WebSocket(SOCKET_BASE_URL);
     socket.current.onopen = () => {
       console.log(`WebSocket connection was created with:${SOCKET_BASE_URL}`);
       setConnected(true);
+      const nameLocalSorage = localStorage.getItem('userName');
+      console.log('userNAME', nameLocalSorage);
       const message = {
         event: 'first-connect',
         messageId: uuid(),
-        userName,
+        userName: nameLocalSorage,
         date: Date.now()
       };
       socket.current.send(JSON.stringify(message));
@@ -88,7 +92,7 @@ const WebSocketChat = () => {
     };
   };
   useEffect(() => {
-    if (userName) {
+    if (userName ) {
       setUserName(userName);
       setShowLogin(false);
       subscribe();
