@@ -2,6 +2,8 @@ const ws = require('ws');
 const { v4: uuid } = require('uuid');
 require('dotenv').config();
 const PORT = process.env.SOCKET_PORT;
+const Message = require('./models/Message');
+
 
 const users = {};
 
@@ -41,6 +43,10 @@ module.exports = () => {
         message.userName = 'system';
         message.text = `User with name ${userName} was connected to chat`;
       }
+      // const savedMessage = new Message({userName: userName, message: message, createdAt: new Date, messageId: uuid()});
+      // const doc = savedMessage.save();
+      
+      // res.send(doc);
       sendToAll(message);
     })
 
@@ -64,6 +70,7 @@ module.exports = () => {
         text: `User with name ${ws.userName} was disconnected`,
         date: new Date(),
       }
+     
       sendToAll(message);
     });
   });
