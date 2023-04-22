@@ -8,15 +8,26 @@ import selectedLike from './images/like_selected.png';
 
 // let SOCKET_BASE_URL = process.env.REACT_APP_SOCKET_BASE_URL;
 let SOCKET_BASE_URL = 'ws://localhost:5000';
+let BASE_URL = 'http://localhost:8080'
 
 console.log(SOCKET_BASE_URL);
 
 const WebSocketChat = () => {
   const userNameStorage = localStorage.getItem('userName');
   const [userName, setUserName] = useState(userNameStorage || '');
+  const [messagesFromDb, setMessagesFromDb] = useState([]);
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState("");
   const [showLogin, setShowLogin] = useState(true);
+
+  //////////////////////Get messages from DataBase
+  const getMessages = async() =>{
+      const {data} = await axios.get(`${BASE_URL}/message`);
+      const reversed = data.reverse();
+      reversed.forEach(element => {
+        setMessagesFromDb(prev => [...prev, element]);
+      });
+  }
 
   const id = uuid();
 
@@ -95,10 +106,15 @@ const WebSocketChat = () => {
     if (userName ) {
       setUserName(userName);
       setShowLogin(false);
+      getMessages();
       subscribe();
     } else {
       subscribeOnAuth()
-        .then(() => subscribe());
+        .then(() => {
+          getMessages();
+          subscribe()
+          
+        });
     }
   }, []);
 
@@ -131,6 +147,15 @@ const WebSocketChat = () => {
           <button onClick={sendMessage}>Send message</button>
         </div>
         <div className="messages">
+        {
+          messagesFromDb.map(message=> <div>
+             <div className="userInfo">
+              <b>{message.userName}</b><br />
+              <b style={{ fontSize: '10px' }}>{new Date(message.createdAt).toISOString()}</b>
+            </div>
+            <div className="message">{message.message}</div>
+          </div>)
+        }
           {messages.map(message => <div>
             <div className="userInfo">
               <b>{message.userName}</b><br />

@@ -9,6 +9,7 @@ const path = require('path');
 const setTelegramWebHook = require('./telegramBot');
 const setupWebSocket = require('./webSocket');
 const MongoDB = require('../Setup/Mongoose');
+const {Message} = require('./models/Message');
 
 const PORT = process.env.PORT;
 
@@ -22,13 +23,13 @@ const emitter = new events.EventEmitter();
 app.use(cors());
 app.use(bodyParser.json());
 setTelegramWebHook(app, emitter);
+app.use(express.static(path.join(__dirname, '../public/build')));
+
+
 const setup = async() => {
  await MongoDB.start(process.env.MONGO_DB_URL);
-}
 
-setup();
 
-app.use(express.static(path.join(__dirname, '../public/build')));
 
 app.get('/login', (req, res) => {
   const { id } = req.query;
@@ -44,7 +45,16 @@ app.get('/login', (req, res) => {
   });
 });
 
+app.get('/message', async (req, res)=>{
+    const messages = await Message.find().sort({date: -1}).limit(10);
+    return res.status(200).send(messages);
+})
 
 app.listen(PORT, ()=> {
   console.log(`Server was started on ${PORT}`);
 })
+
+}
+
+setup();
+

@@ -44,6 +44,7 @@ module.exports = () => {
         message.userName = 'system';
         message.text = `User with name ${userName} was connected to chat`;
       }
+      //save message to db
      const {userName, text, date} = message;
 
       const savedMessage = new Message({userName: userName, message: text, createdAt: date, messageId: uuid()});
