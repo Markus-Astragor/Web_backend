@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "cross-env SOCKET_BASE_URL=ws://localhost:5000 react-scripts start",
-    "build": "react-scripts build",
+    "build": "env-cmd -f ../.env react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

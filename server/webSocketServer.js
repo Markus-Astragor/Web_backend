@@ -46,7 +46,7 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/message', async (req, res)=>{
-    const messages = await Message.find().sort({date: -1}).limit(10);
+    const messages = await Message.find().sort({createdAt: -1}).limit(10);
     return res.status(200).send(messages);
 })
 
