@@ -17,7 +17,7 @@ const PORT = process.env.PORT;
 
 
 const app = express();
-setupWebSocket();
+setupWebSocket.websocket();
 const emitter = new events.EventEmitter();
 
 app.use(cors());
@@ -48,6 +48,11 @@ app.get('/login', (req, res) => {
 app.get('/message', async (req, res)=>{
     const messages = await Message.find().sort({createdAt: -1}).limit(10);
     return res.status(200).send(messages);
+})
+
+app.get('/users', (req, res)=> {
+  const users = setupWebSocket.users;
+  console.log(users);
 })
 
 app.listen(PORT, ()=> {

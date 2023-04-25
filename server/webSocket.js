@@ -7,7 +7,9 @@ const {Message} = require('./models/Message');
 
 const users = {};
 
-module.exports = () => {
+module.exports.users = users;
+
+module.exports.websocket = () => {
   const wss = new ws.Server(
     { port: PORT },
     () => {
