@@ -20,20 +20,23 @@ const WebSocketChat = () => {
   const [value, setValue] = useState("");
   const [showLogin, setShowLogin] = useState(true);
 
+  const [users, setUsers] = useState();
+  const [show, setShow] = useState(false);
   //////////////////////Get messages from DataBase
-  const getMessages = async() =>{
-      const {data} = await axios.get(`${BASE_URL}/message`);
-      const reversed = data.reverse();
-      console.log('data', reversed);
-      reversed.forEach(element => {
-        setMessagesFromDb(prev => [...prev, element]);
-      });
+  const getMessages = async () => {
+    const { data } = await axios.get(`${BASE_URL}/message`);
+    const reversed = data.reverse();
+    reversed.forEach(element => {
+      setMessagesFromDb(prev => [...prev, element]);
+    });
   }
 
-//////////////////////Get users
+  //////////////////////Get users
   const getUsers = async () => {
-    const {data} = await axios.get(`${BASE_URL}/message`);
+    const { data } = await axios.get(`${BASE_URL}/users`);
     console.log('data', data);
+    setUsers(data);
+    setShow(true);
   }
 
 
@@ -43,7 +46,7 @@ const WebSocketChat = () => {
     try {
       const { data } = await axios.get(`/login?id=${id}`);
       const name = `${data.firstName} ${data.lastName}`;
-      console.log('name',name);
+      console.log('name', name);
       setUserName(name);
       localStorage.setItem('userName', name);
       setShowLogin(false);
@@ -111,7 +114,7 @@ const WebSocketChat = () => {
     };
   };
   useEffect(() => {
-    if (userName ) {
+    if (userName) {
       setUserName(userName);
       setShowLogin(false);
       getMessages();
@@ -121,7 +124,7 @@ const WebSocketChat = () => {
         .then(() => {
           getMessages();
           subscribe()
-          
+
         });
     }
   }, []);
@@ -155,15 +158,15 @@ const WebSocketChat = () => {
           <button onClick={sendMessage}>Send message</button>
         </div>
         <div className="messages">
-        {
-          messagesFromDb.map(message=> <div>
-             <div className="userInfo">
-              <b>{message.userName}</b><br />
-              <b style={{ fontSize: '10px' }}>{new Date(message.createdAt).toISOString()}</b>
-            </div>
-            <div className="message">{message.message}</div>
-          </div>)
-        }
+          {
+            messagesFromDb.map(message => <div>
+              <div className="userInfo">
+                <b>{message.userName}</b><br />
+                <b style={{ fontSize: '10px' }}>{new Date(message.createdAt).toISOString()}</b>
+              </div>
+              <div className="message">{message.message}</div>
+            </div>)
+          }
           {messages.map(message => <div>
             <div className="userInfo">
               <b>{message.userName}</b><br />
@@ -173,6 +176,20 @@ const WebSocketChat = () => {
           </div>)}
         </div>
       </div>
+
+      <button onClick={getUsers}>Get users</button>
+      <div>
+        {show ? <div>{users.map(el => {
+          return(
+            <div>
+            {el.userName} {el.status.toString()}
+          </div>
+          )
+        }
+         
+        )}</div> : <></>}
+      </div>
+
     </>
   );
 };
