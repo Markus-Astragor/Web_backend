@@ -51,6 +51,7 @@ module.exports.websocket = () => {
 
       const savedMessage = new Message({userName: userName, message: text, createdAt: date, messageId: uuid()});
       const doc = await savedMessage.save();
+      console.log('message: ' , doc);
       
       sendToAll(message);
     })

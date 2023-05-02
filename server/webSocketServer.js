@@ -54,8 +54,17 @@ app.get('/users', (req, res)=> {
   const users = setupWebSocket.users;
   console.log(users);
   const usersArray = [];
+  let usersObject = {};
   const userNames = Object.keys(users);
-  const usersStatus = Object.values(users);
+  const status = Object.values(users);
+
+  for(let i = 0; i < status.length; i++){
+    usersObject.userName = userNames[i];
+    usersObject.status = status[i];
+    usersArray.push(usersObject);
+  }
+  console.log(usersArray);
+  res.send(usersArray);
 })
 
 app.listen(PORT, ()=> {

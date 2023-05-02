@@ -24,10 +24,18 @@ const WebSocketChat = () => {
   const getMessages = async() =>{
       const {data} = await axios.get(`${BASE_URL}/message`);
       const reversed = data.reverse();
+      console.log('data', reversed);
       reversed.forEach(element => {
         setMessagesFromDb(prev => [...prev, element]);
       });
   }
+
+//////////////////////Get users
+  const getUsers = async () => {
+    const {data} = await axios.get(`${BASE_URL}/message`);
+    console.log('data', data);
+  }
+
 
   const id = uuid();
 
