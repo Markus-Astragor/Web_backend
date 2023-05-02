@@ -53,6 +53,9 @@ app.get('/message', async (req, res)=>{
 app.get('/users', (req, res)=> {
   const users = setupWebSocket.users;
   console.log(users);
+  const usersArray = [];
+  const userNames = Object.keys(users);
+  const usersStatus = Object.values(users);
 })
 
 app.listen(PORT, ()=> {
