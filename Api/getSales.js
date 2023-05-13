@@ -18,7 +18,7 @@ router.get('/sales', async (req, res) => {
 
         const regex = new RegExp(`${part2}$`, 'i');
 
-        const sales = await Sales.find({storeLocation: {$regex: regex}});
+        const sales = await Sales.find({ storeLocation: { $regex: regex } });
 
         res.status(200).send(sales);
 
@@ -36,8 +36,19 @@ router.get('/sales', async (req, res) => {
       }
     }
 
-    // console.log('part1:', part1, 'part2:', part2);
-    const sales = await Sales.find({storeLocation: storeLocation});
+    if (storeLocation.includes('\*')) {
+      // наш роздільник
+      let delimeter = '\*';
+      let str = storeLocation.split(delimeter);
+      let part1 = str[0].slice(0, -1);
+      let part2 = str[1];
+      let middleRegex = new RegExp(`^${part1}.*${part2}$`, `i`);
+      //шукаємо в базі даних за регуляркою
+      const sales = await Sales.find({storeLocation: {$regex: middleRegex}});
+      res.status(200).send(sales);
+    }
+
+    const sales = await Sales.find({ storeLocation: storeLocation });
 
     res.status(200).send(sales);
 
