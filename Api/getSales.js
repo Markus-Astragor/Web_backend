@@ -3,16 +3,23 @@ const router = Router();
 const { Sales } = require('../models/Sales');
 
 router.get('/sales', async (req, res) => {
-  const {_id} = req.query;
-  const queryDb = {};
-  
-  if(_id){
-    queryDb._id = _id;
-  }
+ try {
+  const storeLocation = req.query.storeLocation; //отримуємо значенння storeLocation
+  console.log(storeLocation);
 
-  const docs = await Sales.find(queryDb);
 
-  return res.status(200).send(docs)
+  //Створюємо руглярку
+  const regex = new RegExp('^' + storeLocation.replace('*', '.*'), 'i');
+
+  //вертаємо відповідь Бази даних
+  const sales = await Sales.find({storeLocation: {$regex: regex}});
+
+  res.status(200).send(sales);
+
+
+ } catch (error) {
+    console.log('An error was occured: ',error);
+ }
 })
 
 module.exports = { router }

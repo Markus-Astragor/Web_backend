@@ -1,14 +1,12 @@
 const {Schema, Types, model} = require('mongoose');
 
 const schema = new Schema({
-  _id: { type: Types.ObjectId },
   saleDate: {type: Date},
   items: [{
     name: {type: String},
-    tags: [{
-      0: {type: String},
-      1: {type: String}
-    }],
+    tags: [
+      String
+    ],
     price: {type: Number},
     quantity: {type: Number},
   }],
