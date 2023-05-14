@@ -5,6 +5,8 @@ const { Sales } = require('../models/Sales');
 router.get('/sales', async (req, res) => {
   try {
     const storeLocation = req.query.storeLocation; //отримуємо значенння storeLocation
+    // const customer_age = req.query.customer_age;
+    const customer_emailDomain = req.query.customer_emailDomain;
 
     const regexForStar = /^(\*.*|.*\*)$/;
 
@@ -48,9 +50,17 @@ router.get('/sales', async (req, res) => {
       res.status(200).send(sales);
     }
 
-    const sales = await Sales.find({ storeLocation: storeLocation });
+    if(customer_emailDomain){
+      
+      const regex = new RegExp(`${customer_emailDomain}$`, 'i');
+      const sales = await Sales.find({ "customer.email": {$regex: regex}});
+      res.status(200).json(sales);
+      
+    }
 
-    res.status(200).send(sales);
+    // const sales = await Sales.find({ storeLocation: storeLocation });
+
+    // res.status(200).send(sales);
 
   } catch (error) {
     console.log('An error was occured: ', error);
