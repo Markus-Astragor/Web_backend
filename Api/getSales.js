@@ -16,6 +16,8 @@ router.get('/sales', async (req, res) => {
 
     let part1, part2;
 
+  if(storeLocation)
+  {
     if (regexForStar.test(storeLocation)) 
     {                           // перевіряємо чи наша стрічка містить умови, які нам потрібні, тобто зірочка або спочатку, або в кінці
       if (storeLocation.startsWith('*')) 
@@ -62,6 +64,7 @@ router.get('/sales', async (req, res) => {
       queryDb.storeLocation = {$regex: middleRegex};
 
     }
+  }
 
     if(customer_emailDomain)
     {  
@@ -77,7 +80,9 @@ router.get('/sales', async (req, res) => {
     }
     
     console.log(items_tags);
-    
+
+    if(items_tags)
+    {
       if(items_tags.includes(','))
       {
         let delimeter = ','; ///наш дільник - це кома між тегами, наприклад: kids, travel
@@ -91,7 +96,7 @@ router.get('/sales', async (req, res) => {
         queryDb['items.tags'] = {$regex: regex};
       }
   
-    
+    }
 
      const sales = await Sales.find( queryDb );
 
