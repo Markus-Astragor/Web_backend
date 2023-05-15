@@ -5,11 +5,13 @@ const { Sales } = require('../models/Sales');
 router.get('/sales', async (req, res) => {
   try {
     const storeLocation = req.query.storeLocation; //отримуємо значенння storeLocation
-    // const customer_age = req.query.customer_age;
+    const customer_age = req.query.customer_age;
     const customer_emailDomain = req.query.customer_emailDomain;
     const couponUsed = req.query.couponUsed;
     const items_tags = req.query.items_tags;
   
+    console.log(customer_age);
+
     const queryDb = {};                           //об'єкт у який я записую всі поля, щоб по ньому шукати потім в БД
     const regexForStar = /^(\*.*|.*\*)$/;         //регулярка, яка перевіряє чи перевірка має зірочку чи ні
 
@@ -87,7 +89,7 @@ router.get('/sales', async (req, res) => {
       {
         let delimeter = ','; ///наш дільник - це кома між тегами, наприклад: kids, travel
         let items_tags_str_array = items_tags.split(delimeter); // ['kids', 'travel']
-        let part1 = items_tags_str_array[0].trim();
+        let part1 = items_tags_str_array[0].trim(); //очищаємо від пробілів
         let part2 = items_tags_str_array[1].trim();
         console.log('part1:',part1,'part2:',part2);
         const regex = new RegExp(`(${part1}|${part2})`, 'i');
@@ -95,7 +97,29 @@ router.get('/sales', async (req, res) => {
         const sales = await Sales.find({"items.tags": {$regex: regex}});
         queryDb['items.tags'] = {$regex: regex};
       }
-  
+    }
+
+    if(customer_age)
+    {
+      let customer_age_parsed = JSON.parse(customer_age);
+
+      if(customer_age_parsed.gt)
+      {
+        const sales = await Sales.find({"customer.age": {$gt: customer_age_parsed.gt}});
+        queryDb['customer.age'] = {$gt: customer_age_parsed.gt};
+      }
+
+      if(customer_age_parsed.lt)
+      {
+        const sales = await Sales.find({"customer.age": {$lt: customer_age_parsed.lt}});
+        queryDb['customer.age'] = {$lt: customer_age_parsed.lt};
+      }
+
+      if(customer_age_parsed.gt && customer_age_parsed.lt)
+      {
+        const sales = await Sales.find({"customer.age": {$gt: customer_age_parsed.gt, $lt: customer_age_parsed.lt}});
+        queryDb['customer.age'] = {$gt: customer_age_parsed.gt, $lt: customer_age_parsed.lt};
+      }
     }
 
      const sales = await Sales.find( queryDb );
