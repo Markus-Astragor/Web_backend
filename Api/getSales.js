@@ -8,6 +8,7 @@ router.get('/sales', async (req, res) => {
     // const customer_age = req.query.customer_age;
     const customer_emailDomain = req.query.customer_emailDomain;
     const couponUsed = req.query.couponUsed;
+    // const items_tags = req.query.items_tags;
   
     const queryDb = {};                           //об'єкт у який я записую всі поля, щоб по ньому шукати потім в БД
     const regexForStar = /^(\*.*|.*\*)$/;         //регулярка, яка перевіряє чи перевірка має зірочку чи ні
@@ -15,8 +16,10 @@ router.get('/sales', async (req, res) => {
 
     let part1, part2;
 
-    if (regexForStar.test(storeLocation)) {// перевіряємо чи наша стрічка містить умови, які нам потрібні, тобто зірочка або спочатку, або в кінці
-      if (storeLocation.startsWith('*')) { //якщо починається з *
+    if (regexForStar.test(storeLocation)) 
+    {                           // перевіряємо чи наша стрічка містить умови, які нам потрібні, тобто зірочка або спочатку, або в кінці
+      if (storeLocation.startsWith('*')) 
+      {                            //якщо починається з *
         part1 = '*';
         part2 = storeLocation.substring(1);
         //створюємо регулярку, яка буде шукати з * на почтаку і таким чином знаходити все, що після * шукати як кінець слова
@@ -29,7 +32,8 @@ router.get('/sales', async (req, res) => {
       queryDb.storeLocation = { $regex: regex };
 
       }
-      else if (storeLocation.endsWith('*')) {
+      else if (storeLocation.endsWith('*')) 
+      {                           
         part1 = storeLocation.substring(0, storeLocation.length - 1);//щоб отримати правильний індекс символу 
         part2 = '*';
         //Створюємо руглярку
@@ -44,7 +48,8 @@ router.get('/sales', async (req, res) => {
       }
     }
 
-    if (storeLocation.includes('\*')) {
+    if (storeLocation.includes('\*')) 
+    {                           
       // наш роздільник
       let delimeter = '\*';
       let str = storeLocation.split(delimeter);
@@ -65,11 +70,29 @@ router.get('/sales', async (req, res) => {
       queryDb['customer.email'] = {$regex: regex};
     }
 
-    if(couponUsed)
+    if(couponUsed)            //шукаємо чи couponused true або false
     {
       const sales = await Sales.find({couponUsed: couponUsed});
       queryDb.couponUsed = couponUsed;
     }
+    
+    // console.log(items_tags);
+    // if(items_tags)
+    // {
+    //   console.log('worked2');
+    //   if(items_tags.includes(','))
+    //   {
+    //     console.log('worked');
+    //     let delimeter = ','; ///наш дільник - це кома між тегами, наприклад: kids, travel
+    //     let items_tags_str_array = items_tags.split(delimeter); // ['kids', 'travel']
+    //     let part1 = items_tags_str_array[0];
+    //     let part2 = items_tags_str_array[1];
+    //     let regex = new RegExp(`(${part1}|${part2})`, 'i');
+    //     const sales = await Sales.find({"items.tags": {$regex: regex}});
+    //     queryDb['items.tags'] = {$regex: regex};
+    //   }
+    // }
+    
 
      const sales = await Sales.find( queryDb );
 
