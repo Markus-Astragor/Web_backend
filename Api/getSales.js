@@ -7,8 +7,9 @@ router.get('/sales', async (req, res) => {
     const storeLocation = req.query.storeLocation; //отримуємо значенння storeLocation
     // const customer_age = req.query.customer_age;
     const customer_emailDomain = req.query.customer_emailDomain;
-
+    const queryDb = {};
     const regexForStar = /^(\*.*|.*\*)$/;
+
 
     let part1, part2;
 
@@ -22,7 +23,8 @@ router.get('/sales', async (req, res) => {
 
         const sales = await Sales.find({ storeLocation: { $regex: regex } });
 
-        res.status(200).send(sales);
+      //  return  res.status(200).send(sales);
+      queryDb.storeLocation = { $regex: regex };
 
       }
       else if (storeLocation.endsWith('*')) {
@@ -34,7 +36,9 @@ router.get('/sales', async (req, res) => {
         //вертаємо відповідь Бази даних
         const sales = await Sales.find({ storeLocation: { $regex: regex } });//дозволяє виконувати використовувати регулярний вираз у фільтрі запиту
 
-        res.status(200).send(sales);
+      //  return res.status(200).send(sales);
+      queryDb.storeLocation = { $regex: regex };
+
       }
     }
 
@@ -47,20 +51,22 @@ router.get('/sales', async (req, res) => {
       let middleRegex = new RegExp(`^${part1}.*${part2}$`, `i`);
       //шукаємо в базі даних за регуляркою
       const sales = await Sales.find({storeLocation: {$regex: middleRegex}});
-      res.status(200).send(sales);
+      // return res.status(200).send(sales);
+      queryDb.storeLocation = {$regex: middleRegex};
+
     }
 
     if(customer_emailDomain){
       
       const regex = new RegExp(`${customer_emailDomain}$`, 'i');
       const sales = await Sales.find({ "customer.email": {$regex: regex}});
-      res.status(200).json(sales);
-      
+      //  return res.status(200).json(sales);
+      queryDb['customer.email'] = {$regex: regex};
     }
 
-    // const sales = await Sales.find({ storeLocation: storeLocation });
+     const sales = await Sales.find( queryDb );
 
-    // res.status(200).send(sales);
+     res.status(200).send(sales);
 
   } catch (error) {
     console.log('An error was occured: ', error);
