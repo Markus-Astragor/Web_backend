@@ -8,7 +8,7 @@ router.get('/sales', async (req, res) => {
     // const customer_age = req.query.customer_age;
     const customer_emailDomain = req.query.customer_emailDomain;
     const couponUsed = req.query.couponUsed;
-    // const items_tags = req.query.items_tags;
+    const items_tags = req.query.items_tags;
   
     const queryDb = {};                           //об'єкт у який я записую всі поля, щоб по ньому шукати потім в БД
     const regexForStar = /^(\*.*|.*\*)$/;         //регулярка, яка перевіряє чи перевірка має зірочку чи ні
@@ -76,22 +76,21 @@ router.get('/sales', async (req, res) => {
       queryDb.couponUsed = couponUsed;
     }
     
-    // console.log(items_tags);
-    // if(items_tags)
-    // {
-    //   console.log('worked2');
-    //   if(items_tags.includes(','))
-    //   {
-    //     console.log('worked');
-    //     let delimeter = ','; ///наш дільник - це кома між тегами, наприклад: kids, travel
-    //     let items_tags_str_array = items_tags.split(delimeter); // ['kids', 'travel']
-    //     let part1 = items_tags_str_array[0];
-    //     let part2 = items_tags_str_array[1];
-    //     let regex = new RegExp(`(${part1}|${part2})`, 'i');
-    //     const sales = await Sales.find({"items.tags": {$regex: regex}});
-    //     queryDb['items.tags'] = {$regex: regex};
-    //   }
-    // }
+    console.log(items_tags);
+    
+      if(items_tags.includes(','))
+      {
+        let delimeter = ','; ///наш дільник - це кома між тегами, наприклад: kids, travel
+        let items_tags_str_array = items_tags.split(delimeter); // ['kids', 'travel']
+        let part1 = items_tags_str_array[0].trim();
+        let part2 = items_tags_str_array[1].trim();
+        console.log('part1:',part1,'part2:',part2);
+        const regex = new RegExp(`(${part1}|${part2})`, 'i');
+        console.log('regex:',regex);
+        const sales = await Sales.find({"items.tags": {$regex: regex}});
+        queryDb['items.tags'] = {$regex: regex};
+      }
+  
     
 
      const sales = await Sales.find( queryDb );
