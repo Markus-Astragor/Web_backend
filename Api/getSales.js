@@ -7,8 +7,10 @@ router.get('/sales', async (req, res) => {
     const storeLocation = req.query.storeLocation; //отримуємо значенння storeLocation
     // const customer_age = req.query.customer_age;
     const customer_emailDomain = req.query.customer_emailDomain;
-    const queryDb = {};
-    const regexForStar = /^(\*.*|.*\*)$/;
+    const couponUsed = req.query.couponUsed;
+  
+    const queryDb = {};                           //об'єкт у який я записую всі поля, щоб по ньому шукати потім в БД
+    const regexForStar = /^(\*.*|.*\*)$/;         //регулярка, яка перевіряє чи перевірка має зірочку чи ні
 
 
     let part1, part2;
@@ -56,12 +58,17 @@ router.get('/sales', async (req, res) => {
 
     }
 
-    if(customer_emailDomain){
-      
+    if(customer_emailDomain)
+    {  
       const regex = new RegExp(`${customer_emailDomain}$`, 'i');
       const sales = await Sales.find({ "customer.email": {$regex: regex}});
-      //  return res.status(200).json(sales);
       queryDb['customer.email'] = {$regex: regex};
+    }
+
+    if(couponUsed)
+    {
+      const sales = await Sales.find({couponUsed: couponUsed});
+      queryDb.couponUsed = couponUsed;
     }
 
      const sales = await Sales.find( queryDb );
