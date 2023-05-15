@@ -117,6 +117,10 @@ router.get('/sales', async (req, res) => {
 
       if(customer_age_parsed.gt && customer_age_parsed.lt)
       {
+        if(customer_age_parsed.lt < customer_age_parsed.gt) // перевірка чи lt є більшим за gt
+        {
+         return res.status(404).send('lt повинне бути більшим за gt');
+        }
         const sales = await Sales.find({"customer.age": {$gt: customer_age_parsed.gt, $lt: customer_age_parsed.lt}});
         queryDb['customer.age'] = {$gt: customer_age_parsed.gt, $lt: customer_age_parsed.lt};
       }
