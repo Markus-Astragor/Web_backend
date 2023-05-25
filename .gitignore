@@ -3,9 +3,4 @@
 /public/dist
 /public/node_modules
 /test
-coverage/lcov-report/shared/wrapperApi.js.html
-coverage/lcov-report/shared/index.html
-coverage/lcov-report/api/handlers/dishes/index.html
-coverage/lcov-report/api/handlers/dishes/create.js.html
-coverage/lcov-report/index.html
-coverage/clover.xml
+/coverage
