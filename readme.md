@@ -1,3 +1,5 @@
-For lab1 just change in .env
-PORT = 8080
-MONGO_DB_URL = mongodb+srv://Astragor:z1x2c3v4b5@sandbox.5pnjbg4.mongodb.net/sample_mflix?retryWrites=true&w=majority
+## Setup jest
+
+1. npm install --save-dev jest
+2. npm install -D @types/jest
+3. ./node_modules/jest/bin/jest.js --init
