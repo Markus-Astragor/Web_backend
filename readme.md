@@ -1,3 +1,14 @@
-For lab1 just change in .env
-PORT = 8080
-MONGO_DB_URL = mongodb+srv://Astragor:z1x2c3v4b5@sandbox.5pnjbg4.mongodb.net/sample_mflix?retryWrites=true&w=majority
+## API route for returning list of online users
+
+METHOD: GET
+PATH: /users?status=online|offline
+RESPONSE:
+```
+{
+ users: [{ userName: string, status: 'online' | 'offline' }]
+}
+```
+
+## Setup integration tests
+
+1. npm i mongodb-memory-server
