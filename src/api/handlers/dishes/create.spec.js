@@ -46,7 +46,7 @@ describe("createDish", () => {
 
   expect(res.send).toBeCalledWith({
    ...req.body,
-   isAvailable: true
+   isAvailable: false
   });
  });
 });
