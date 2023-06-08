@@ -5,8 +5,11 @@ module.exports.getDishes = async (req, res) => {
 
  const query = {};
 
- if (isAvailable) {
-  isAvailable = isAvailable == 'true';
+ if (isAvailable) { 
+    if (!['true','false'].includes(isAvailable)){
+        return res.status(400).send('Must be true or false');
+    }
+  isAvailable = isAvailable == 'true'; 
   query.isAvailable = isAvailable;
  }
 
@@ -20,7 +23,7 @@ module.exports.getDishes = async (req, res) => {
    query.price.$lt = price.lt;
   }
 
-  if (!Object.keys(query).length) {
+  if (!Object.keys(query.price).length) {
    return res.status(400).send({
     message: `Parameter price has incorrect format`
    });
