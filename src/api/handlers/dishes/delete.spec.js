@@ -1,4 +1,5 @@
 const { deleteDish } = require('./delete');
+const { Dishes } = require('../../../models');
 const { Types } = require('mongoose');
 
 const DishesMock = {};
@@ -12,12 +13,16 @@ jest.mock('../../../models', () => {
     };
 });
 
-describe('method delete is working', () => {
+
+
+
+describe('Testing Delete Method', () => {
     it('deleteOne is working', async () => {
+
         const req = {
             params: { _id: Types.ObjectId().toHexString() }
         }
-
+        
         const res = {
             status: jest.fn().mockImplementation(() => res),
             send: jest.fn()
@@ -26,6 +31,26 @@ describe('method delete is working', () => {
         await deleteDish(req, res);
 
         expect(DishesMock.deleteOne).toHaveBeenCalledWith({ _id: expect.any(Object) });
+        expect(typeof deleteDish).toBe('function');
         expect(res.status).toBeCalledWith(200);
     })
+
+    it('should handle 404 if id isn`t found', async () => {
+        const req = {
+          params: { _id: undefined }
+        };
+      
+        const res = {
+          status: jest.fn().mockImplementation(() => res),
+          send: jest.fn()
+        };
+      
+      
+        await deleteDish(req, res);
+
+        expect(DishesMock.deleteOne).toHaveBeenCalledWith(expect.objectContaining({ _id:  undefined }));
+        expect(res.status).toBeCalledWith(404);
+      });
+      
 })
+
