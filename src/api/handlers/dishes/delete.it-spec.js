@@ -40,11 +40,8 @@ it('should be deleted from db ', async () => {
   await deleteDish(req, res);
 
   const count = await Dishes.estimatedDocumentCount();
+  
   expect(count).toBe(5);
-  // const _id = res.send.mock.calls[0][0]._id;
-  // console.log(_id);
-  // const doc = await Dishes.findById(_id);
-
   expect(res.status).toBeCalledWith(200);
 
 })
