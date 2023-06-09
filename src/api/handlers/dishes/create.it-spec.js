@@ -18,7 +18,7 @@ describe("createDish", () => {
     })
 
     it("should be saved in db", async () => {
-        const req = { body: { price: 56, isAvailable: true } };
+        const req = { body: { price: 56, isAvailable: true, name: 'coffee' } };
         const res = {
             send: jest.fn(),
             status: jest.fn().mockImplementation(() => res)

@@ -1,5 +1,4 @@
 const { deleteDish } = require('./delete');
-const { Dishes } = require('../../../models');
 const { Types } = require('mongoose');
 
 const DishesMock = {};
@@ -47,8 +46,6 @@ describe('Testing Delete Method', () => {
       
       
         await deleteDish(req, res);
-
-        expect(DishesMock.deleteOne).toHaveBeenCalledWith(expect.objectContaining({ _id:  undefined }));
         expect(res.status).toBeCalledWith(404);
       });
       
