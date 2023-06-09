@@ -1,4 +1,6 @@
 const { Dishes } = require('../../../models');
+const {Types} = require('mongoose');
+
 
 module.exports.updateDish = async (req, res) => {
  const { price, isAvailable } = req.body;
@@ -8,7 +10,7 @@ module.exports.updateDish = async (req, res) => {
   update.price = price;
  }
 
- if (isAvailable !== undefined) {
+ if (isAvailable) {
   update.isAvailable = isAvailable;
  }
 

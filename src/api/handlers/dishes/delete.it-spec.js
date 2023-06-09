@@ -23,9 +23,9 @@ beforeAll(async () => {
 });
 
 
-// afterAll(async () => {
-//   await Dishes.deleteMany();
-// })
+afterAll(async () => {
+  await Dishes.deleteMany();
+})
 
 
 it('should be deleted from db ', async () => {
@@ -40,7 +40,7 @@ it('should be deleted from db ', async () => {
   await deleteDish(req, res);
 
   const count = await Dishes.estimatedDocumentCount();
-  
+
   expect(count).toBe(5);
   expect(res.status).toBeCalledWith(200);
 
